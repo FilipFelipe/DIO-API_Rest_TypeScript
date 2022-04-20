@@ -1,11 +1,16 @@
-import express, { Request, Response, NextFunction } from 'express'
+import 'dotenv/config'
+import express from 'express'
+import statusRoute from './routes/status.route';
+import usersRoute from './routes/users.route';
 
+const PORT = process.env.PORT||3333;
 const app = express();
-const PORT = 3000;
 
-app.get('/status', (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send({ foo: 'bar1' })
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(usersRoute);
+app.use(statusRoute);
 
 app.listen(PORT, () => {
     console.log(`API executando na porta ${PORT}`);
