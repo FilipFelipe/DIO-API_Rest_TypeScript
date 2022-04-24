@@ -1,5 +1,5 @@
 import db from '../db';
-import DatabaseError from '../models/errors/database.error.model';
+import DatabaseError from '../errors/database.error.model';
 import User from '../models/user.model';
 
 const secret = process.env.SECRET || '86ee2b27-e549-423e-8d03-5b378eaa9f69'
@@ -14,7 +14,7 @@ class UserRepository {
         return rows || [];
     }
 
-    async findByUUID(uuid: string): Promise<User> {
+    async findByUuid(uuid: string): Promise<User> {
         try {
             const query = `
         SELECT uuid, username
