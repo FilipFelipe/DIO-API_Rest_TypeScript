@@ -21,6 +21,7 @@
   "homepage": "https://github.com/FilipFelipe/DIO-API_Rest_TypeScript#readme",
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.25",
     "@types/pg": "^8.6.5",
     "ts-node-dev": "^1.1.8",
@@ -30,6 +31,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "http-status-codes": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3"
   }
 }

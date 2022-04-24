@@ -1,26 +1,25 @@
 import { Router, Request, Response, NextFunction } from "express";
 import ForbiddenError from "../models/errors/forbidden.error.model";
+import userRepository from "../repositories/user.repository";
+import JWT from 'jsonwebtoken';
+import basicAuthenticationMiddleware from "../middlewares/basic-authentication.middleware";
 
 const authorization = Router();
 
-authorization.post('/token', (req: Request, res: Response, next: NextFunction) => {
+authorization.post('/token', basicAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authorizationHeader = req.headers['authorization'];
-        if (!authorizationHeader) {
-            throw new ForbiddenError('Credenciais não informadas')
-        }
-        const [authenticationTypen, token] = authorizationHeader.split(' ');
-        if (authenticationTypen !== 'Basic' || !token) {
-            throw new ForbiddenError('Tipo de authentication inválido')
-        }
-        const tokenContent = Buffer.from(token, 'base64').toString('utf-8');
-        const [username, password] = tokenContent.split(':');
+        const user = req.user;
 
-        if(!username || !password){
-            throw new ForbiddenError('Credenciais não preenchidas');
+        if (!user) {
+            throw new ForbiddenError('Usuário inválido');
         }
-        res.send({username, password});
-        
+
+        const jwtPayload = { username: user.username };
+        const jwtOptions = { subject: user?.uuid };
+        const secretKey = 'secret-JWT'
+        const jwt = JWT.sign(jwtPayload, secretKey, jwtOptions);
+
+        res.send(jwt);
     } catch (error) {
         next(error)
     }
